@@ -3,6 +3,7 @@
  * @param {function} fn The function to buffer calls of
  * @param {object} [opts]
  * @param {number} [opts.capacity=10] Capacity of the ring-buffer of the calls
+ * @param {number|boolean} [opts.flush=capacity] Auto-flush when buffer gets full
  * @param {boolean} [opts.reverse] Reverse the order of buffer calls
  * @returns {function} A function that pushes its arguments into the buffer
  */
@@ -14,13 +15,15 @@ export default function fnBuffer(fn, opts) {
    */
   const push = (...args) => {
     queue.push(args);
+    if (opts.flush !== false) push.flush(opts.flush);
   }
   /**
    * Calls all previously buffered functions and returns an array of results
    */
-  push.flush = () => {
-    const flushed = queue.flush();
+  push.flush = (length) => {
+    let flushed = queue.flush();
     if (opts?.reverse) flushed.reverse();
+    if (typeof length === 'number') flushed = flushed.slice(0, length);
     return flushed.map(args => fn(...args));
   }
   return push;

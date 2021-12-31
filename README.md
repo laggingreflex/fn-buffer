@@ -19,6 +19,7 @@ buffer(fn, opts)
 * **`fn`** `<function>(required)` The function to buffer calls of
 * **`opts`** `[number|object]` Options or `capacity`
 * **`opts.capacity`** `[number=10]` Capacity of the ring-buffer of the calls
+* **`opts.flush`** `[boolean|number=capacity]` Auto-flush when buffer gets full
 * **`opts.reverse`** `[boolean]` Reverse the order of buffer calls
 
 ## Example
@@ -44,7 +45,7 @@ bufferedLog.flush();
 ```js
 import buffer from 'fn-buffer'
 
-const debug = buffer(console.debug)
+export const debug = buffer(console.debug, { flush: false })
 process.on('uncaughtExceptionMonitor', debug.flush)
 ```
 
