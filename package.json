@@ -8,6 +8,7 @@
     "test": "mocha"
   },
   "repository": "laggingreflex/fn-buffer",
+  "keywords": ["buffer", "function"],
   "devDependencies": {
     "mocha": "^9.1.3"
   }
