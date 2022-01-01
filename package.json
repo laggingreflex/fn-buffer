@@ -1,6 +1,6 @@
 {
   "name": "fn-buffer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Buffer function calls till you flush",
   "main": "index.js",
   "type": "module",
@@ -8,7 +8,10 @@
     "test": "mocha"
   },
   "repository": "laggingreflex/fn-buffer",
-  "keywords": ["buffer", "function"],
+  "keywords": [
+    "buffer",
+    "function"
+  ],
   "devDependencies": {
     "mocha": "^9.1.3"
   }
