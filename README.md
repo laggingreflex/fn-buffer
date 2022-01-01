@@ -13,7 +13,7 @@ npm install fn-buffer
 ## API
 
 ```js
-buffer(fn, opts)
+new BufferedFunction(fn, opts)
 ```
 
 * **`fn`** `<function>(required)` The function to buffer calls of
@@ -25,9 +25,9 @@ buffer(fn, opts)
 ## Example
 
 ```js
-import buffer from 'fn-buffer'
+import BufferedFunction from 'fn-buffer'
 
-const bufferedLog = buffer(console.log);
+const bufferedLog = new BufferedFunction(console.log);
 
 bufferedLog('a')
 bufferedLog('b')
@@ -40,13 +40,17 @@ bufferedLog.flush();
 /* Logs everything at once */
 ```
 
-### [**Backtrace logging**](http://www.exampler.com/writing/ring-buffer.pdf)
+### Backtrace logging
+
+This can be used to create [backtrace-logging](http://www.exampler.com/writing/ring-buffer.pdf):
 
 ```js
-import buffer from 'fn-buffer'
+import BufferedFunction from 'fn-buffer'
 
-export const debug = buffer(console.debug, { flush: false })
+export const debug = BufferedFunction(console.debug, { flush: false })
 process.on('uncaughtExceptionMonitor', debug.flush)
 ```
 
-This `debug` will only log to console in the event of an `uncaughtException`.
+This `debug` function will only log to console in the event of an `uncaughtException`.
+
+See [**backtrace-logging**](https://github.com/laggingreflex/backtrace-logging) for a module that does exactly this.

@@ -1,10 +1,10 @@
 import assert from 'assert';
-import buffer from './index.js';
+import BufferedFunction from './index.js';
 
 describe('basic', () => {
   it('should work', () => {
     const { calls, fn } = spy();
-    const bufferedLog = buffer(fn);
+    const bufferedLog = new BufferedFunction(fn);
 
     bufferedLog('a')
     bufferedLog('b')
