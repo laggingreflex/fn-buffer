@@ -12,11 +12,28 @@ describe('basic', () => {
     bufferedLog('d')
     bufferedLog('e')
     assert.equal(calls.length, 0);
-
     bufferedLog.flush();
-    bufferedLog.flush()
     assert.equal(calls.length, 5);
-    /* Logs everything at once */
+  });
+})
+
+describe('auto-flush', () => {
+  it('should work', () => {
+    const { calls, fn } = spy();
+    const bufferedLog = new BufferedFunction(fn);
+
+    bufferedLog('1')
+    bufferedLog('2')
+    bufferedLog('3')
+    bufferedLog('4')
+    bufferedLog('5')
+    bufferedLog('6')
+    bufferedLog('7')
+    bufferedLog('8')
+    bufferedLog('9')
+    assert.equal(calls.length, 0);
+    bufferedLog('10')
+    assert.equal(calls.length, 10);
   });
 })
 

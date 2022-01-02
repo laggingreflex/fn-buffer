@@ -6,7 +6,7 @@ export default class BufferedFunction extends Function {
    * @param {function} fn The function to buffer calls of
    * @param {object} [opts]
    * @param {number} [opts.capacity=10] Capacity of the ring-buffer of the calls
-   * @param {number|boolean} [opts.flush=capacity] Auto-flush when buffer gets full
+   * @param {number} [opts.flush=capacity] Auto-flush when buffer gets full. Set 0 to disable
    * @param {boolean} [opts.reverse] Reverse the order of buffer calls
    * @returns {apply} A function that pushes its call state into the buffer
    */
@@ -24,13 +24,14 @@ export default class BufferedFunction extends Function {
   /** @type {apply} */
   apply = (target, thisArgument, argumentsList) => {
     this.queue.push([ /* not target */ this.fn, thisArgument, argumentsList]);
-    if (this.queue.isFull && this.opts?.flush !== false) this.queue.flush(this.opts?.flush);
+    if (this.queue.isFull) this.flush(this.opts?.flush);
   }
-  flush = () => {
+  flush = (length = this.queue.capacity) => {
+    if (!length) return;
     let flushed = this.queue.flush();
     if (this.opts?.reverse) flushed.reverse();
     if (typeof length === 'number') flushed = flushed.slice(0, length);
-    if (!flushed.length) return
+    if (!flushed.length) return;
     // debug?.(`Skipping ${this.queue.total} calls`);
     // debug?.(`Flushing last ${flushed.length}/${this.queue.total} calls`);
     return flushed.map(([target = this.fn, thisArgument, argumentsList]) => {
@@ -66,7 +67,7 @@ export class BufferQueue extends Array {
   }
 
   get isFull() {
-    return this.length > this.capacity;
+    return this.length >= this.capacity;
   }
 
   /**

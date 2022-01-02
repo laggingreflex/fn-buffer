@@ -19,7 +19,7 @@ new BufferedFunction(fn, opts)
 * **`fn`** `<function>(required)` The function to buffer calls of
 * **`opts`** `[number|object]` Options or `capacity`
 * **`opts.capacity`** `[number=10]` Capacity of the ring-buffer of the calls
-* **`opts.flush`** `[boolean|number=capacity]` Auto-flush when buffer gets full
+* **`opts.flush`** `[number=capacity]` Auto-flush when buffer gets full
 * **`opts.reverse`** `[boolean]` Reverse the order of buffer calls
 
 ## Example
@@ -47,7 +47,7 @@ This can be used to create [backtrace-logging](http://www.exampler.com/writing/r
 ```js
 import BufferedFunction from 'fn-buffer'
 
-export const debug = BufferedFunction(console.debug, { flush: false })
+export const debug = new BufferedFunction(console.debug, { flush: 0 })
 process.on('uncaughtExceptionMonitor', debug.flush)
 ```
 
