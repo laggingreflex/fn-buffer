@@ -1,6 +1,6 @@
 {
   "name": "fn-buffer",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Buffer function calls till you flush",
   "main": "index.js",
   "type": "module",
